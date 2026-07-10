@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUYEN — Photographer &amp; Videographer</title>
+<meta name="description" content="Portfolio điện ảnh của Quyen — Photographer &amp; Videographer chuyên storytelling, thương mại, sự kiện và documentary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111111;
+    --sidebar:#0C0C0C;
+    --card:#181818;
+    --text:#FFFFFF;
+    --text-dim:#A5A5A5;
+    --accent:#FFFFFF;
+    --line: rgba(255,255,255,0.08);
+    --ease: cubic-bezier(.16,.84,.44,1);
+    --sidebar-w: 220px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', -apple-system, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer;}
+  img{display:block;max-width:100%;}
+
+  ::selection{background:#fff;color:#111;}
+
+  /* ---------- scrollbar ---------- */
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:#333;border-radius:10px;}
+
+  /* ================= SIDEBAR ================= */
+  .sidebar{
+    position:fixed;
+    top:0; left:0;
+    width:var(--sidebar-w);
+    height:100vh;
+    background:var(--sidebar);
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-between;
+    padding:36px 0 28px;
+    z-index:1000;
+  }
+
+  .logo{
+    width:46px;height:46px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.25);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:16px;
+    letter-spacing:0.5px;
+    transition:transform .4s var(--ease), border-color .4s var(--ease);
+  }
+  .logo:hover{transform:rotate(90deg);border-color:#fff;}
+
+  .nav-menu{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:30px;
+  }
+  .nav-item{
+    font-size:13px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    font-weight:600;
+    color:var(--text-dim);
+    position:relative;
+    padding:4px 0;
+    transition:color .3s var(--ease);
+  }
+  .nav-item::after{
+    content:'';
+    position:absolute;
+    bottom:-6px; left:50%;
+    transform:translateX(-50%);
+    width:0; height:1px;
+    background:#fff;
+    transition:width .35s var(--ease);
+  }
+  .nav-item:hover{color:#fff;}
+  .nav-item.active{color:#fff;font-weight:700;}
+  .nav-item.active::after{width:100%;}
+
+  .socials{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+  }
+  .socials a{
+    color:var(--text-dim);
+    display:flex;align-items:center;justify-content:center;
+    width:18px;height:18px;
+    transition:color .3s var(--ease), transform .3s var(--ease);
+  }
+  .socials a:hover{color:#fff;transform:translateY(-2px);}
+  .socials svg{width:17px;height:17px;fill:currentColor;}
+
+  /* hamburger (mobile) */
+  .hamburger{
+    display:none;
+    position:fixed;
+    top:20px; right:20px;
+    z-index:1200;
+    width:42px;height:42px;
+    border-radius:50%;
+    background:rgba(20,20,20,0.7);
+    backdrop-filter:blur(6px);
+    align-items:center;justify-content:center;
+    border:1px solid var(--line);
+  }
+  .hamburger span{
+    position:relative;
+    width:18px;height:1px;background:#fff;
+    display:block;
+    transition:all .3s var(--ease);
+  }
+  .hamburger span::before,.hamburger span::after{
+    content:'';
+    position:absolute;left:0;
+    width:18px;height:1px;background:#fff;
+    transition:all .3s var(--ease);
+  }
+  .hamburger span::before{top:-6px;}
+  .hamburger span::after{top:6px;}
+  .hamburger.open span{background:transparent;}
+  .hamburger.open span::before{transform:rotate(45deg);top:0;}
+  .hamburger.open span::after{transform:rotate(-45deg);top:0;}
+
+  .sidebar-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.6);
+    z-index:900;
+    opacity:0;
+    transition:opacity .3s var(--ease);
+  }
+
+  /* ================= MAIN ================= */
+  .main{
+    margin-left:var(--sidebar-w);
+    min-height:100vh;
+    padding:48px 40px 80px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:34px;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .section-head h1{
+    font-size:clamp(28px,4vw,42px);
+    font-weight:800;
+    letter-spacing:-1px;
+  }
+  .section-head span{
+    font-size:13px;
+    color:var(--text-dim);
+    letter-spacing:2px;
+    text-transform:uppercase;
+  }
+
+  .tab-panel{display:none;}
+  .tab-panel.active{
+    display:block;
+    animation:fadeIn .5s var(--ease);
+  }
+  @keyframes fadeIn{
+    from{opacity:0;transform:translateY(14px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ---------- MASONRY GALLERY ---------- */
+  .masonry{
+    column-count:4;
+    column-gap:16px;
+  }
+  .g-item{
+    break-inside:avoid;
+    margin-bottom:16px;
+    position:relative;
+    border-radius:10px;
+    overflow:hidden;
+    background:var(--card);
+    cursor:pointer;
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .g-item.reveal{opacity:1;transform:translateY(0);}
+
+  .g-item img,.g-item .thumb{
+    width:100%;
+    display:block;
+    transition:transform .5s var(--ease), filter .5s var(--ease);
+    will-change:transform;
+  }
+  .g-item:hover img,.g-item:hover .thumb{transform:scale(1.06);filter:brightness(0.75);}
+
+  .g-overlay{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%);
+    opacity:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:opacity .3s var(--ease);
+  }
+  .g-item:hover .g-overlay{opacity:1;}
+
+  .view-icon{
+    width:46px;height:46px;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    transform:scale(.7);
+    opacity:0;
+    transition:all .35s var(--ease);
+  }
+  .g-item:hover .view-icon{transform:scale(1);opacity:1;}
+  .view-icon svg{width:18px;height:18px;stroke:#fff;fill:none;}
+
+  .play-icon{
+    width:56px;height:56px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.6);
+    backdrop-filter:blur(4px);
+    display:flex;align-items:center;justify-content:center;
+    transform:scale(.7);
+    opacity:0;
+    transition:all .35s var(--ease);
+  }
+  .g-item:hover .play-icon{transform:scale(1);opacity:1;}
+  .play-icon svg{width:20px;height:20px;fill:#fff;margin-left:3px;}
+
+  .g-caption{
+    position:absolute; left:14px; bottom:12px;
+    font-size:12px; letter-spacing:1px;
+    color:#fff;
+    text-transform:uppercase;
+    opacity:0; transform:translateY(6px);
+    transition:all .35s var(--ease);
+  }
+  .g-item:hover .g-caption{opacity:.85;transform:translateY(0);}
+
+  /* ---------- LIGHTBOX ---------- */
+  .lightbox{
+    position:fixed; inset:0;
+    background:rgba(8,8,8,0.97);
+    z-index:2000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0; visibility:hidden;
+    transition:opacity .35s var(--ease);
+  }
+  .lightbox.open{opacity:1;visibility:visible;}
+  .lightbox img{
+    max-width:88vw; max-height:86vh;
+    border-radius:6px;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+  .lb-close,.lb-prev,.lb-next{
+    position:absolute;
+    width:48px;height:48px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+    transition:background .3s var(--ease), transform .3s var(--ease);
+  }
+  .lb-close:hover,.lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,0.1);}
+  .lb-close{top:24px; right:24px;}
+  .lb-prev{left:24px; top:50%; transform:translateY(-50%);}
+  .lb-next{right:24px; top:50%; transform:translateY(-50%);}
+  .lb-close svg,.lb-prev svg,.lb-next svg{width:18px;height:18px;stroke:#fff;fill:none;}
+
+  /* ---------- VIDEO MODAL ---------- */
+  .video-modal{
+    position:fixed; inset:0;
+    background:rgba(8,8,8,0.97);
+    z-index:2000;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; visibility:hidden;
+    transition:opacity .35s var(--ease);
+    padding:40px;
+  }
+  .video-modal.open{opacity:1;visibility:visible;}
+  .video-frame{
+    width:min(1000px,90vw);
+    aspect-ratio:16/9;
+    background:#000;
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  }
+  .video-frame iframe{width:100%;height:100%;border:0;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    gap:64px;
+    align-items:center;
+  }
+  .about-photo{
+    border-radius:12px;
+    overflow:hidden;
+    opacity:0; transform:translateY(30px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  .about-photo.reveal{opacity:1;transform:translateY(0);}
+  .about-photo img{width:100%;height:100%;object-fit:cover;}
+
+  .about-text{
+    opacity:0; transform:translateY(30px);
+    transition:opacity .7s var(--ease) .1s, transform .7s var(--ease) .1s;
+  }
+  .about-text.reveal{opacity:1;transform:translateY(0);}
+  .about-text .eyebrow{
+    font-size:12px;letter-spacing:3px;color:var(--text-dim);
+    text-transform:uppercase; margin-bottom:24px;
+  }
+  .about-text h2{
+    font-size:clamp(30px,4vw,46px);
+    font-weight:800;
+    letter-spacing:-1px;
+    margin-bottom:22px;
+  }
+  .about-text p{
+    color:var(--text-dim);
+    font-size:16px;
+    line-height:1.85;
+    max-width:520px;
+    margin-bottom:20px;
+  }
+  .about-text .lead{
+    color:#fff;
+    font-weight:700;
+    font-size:clamp(19px,2vw,23px);
+    line-height:1.5;
+    max-width:540px;
+    margin-bottom:24px;
+  }
+  .about-text .body-text{
+    margin-bottom:36px;
+  }
+  .about-text .body-text p{
+    margin-bottom:16px;
+  }
+  .about-text .body-text p:last-child{
+    margin-bottom:0;
+  }
+  .stats{
+    display:flex;
+    gap:44px;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+  }
+  .stat b{
+    display:block;
+    font-size:30px;
+    font-weight:800;
+  }
+  .stat span{
+    font-size:12px;
+    color:var(--text-dim);
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+  }
+  .btn-contact{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:16px 34px;
+    border:1px solid #fff;
+    border-radius:2px;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    transition:background .35s var(--ease), color .35s var(--ease);
+  }
+  .btn-contact:hover{background:#fff;color:#111;}
+
+  /* ---------- INFO CARDS ---------- */
+  .info-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+    margin-top:64px;
+  }
+  .info-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:30px 26px;
+    opacity:0; transform:translateY(30px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease), border-color .35s var(--ease);
+  }
+  .info-card.reveal{opacity:1;transform:translateY(0);}
+  .info-card:hover{border-color:rgba(255,255,255,0.22);}
+  .info-card h3{
+    font-size:17px;
+    font-weight:700;
+    margin-bottom:14px;
+    letter-spacing:-0.2px;
+  }
+  .info-card p{
+    color:var(--text-dim);
+    font-size:14px;
+    line-height:1.85;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-section{
+    margin-top:80px;
+    text-align:center;
+  }
+  .skills-eyebrow{
+    font-size:12px;
+    letter-spacing:3px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .skills-desc{
+    color:var(--text-dim);
+    font-size:16px;
+    margin-bottom:40px;
+  }
+  .skills-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+  }
+  .skill-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:42px 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    opacity:0; transform:translateY(30px);
+    transition:opacity .7s var(--ease), transform .7s var(--ease), border-color .35s var(--ease), transform .35s var(--ease);
+  }
+  .skill-card.reveal{opacity:1;transform:translateY(0);}
+  .skill-card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,0.25);}
+  .skill-icon{
+    width:64px;height:64px;
+    border-radius:16px;
+    background:#fff;
+    color:#111;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;
+    font-size:19px;
+    letter-spacing:0.3px;
+  }
+  .skill-card span{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+  }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width:1200px){
+    .masonry{column-count:3;}
+  }
+
+  @media (max-width:900px){
+    :root{--sidebar-w:180px;}
+    .masonry{column-count:3;}
+    .nav-item{font-size:12px;letter-spacing:1.5px;}
+  }
+
+  @media (max-width:760px){
+    .hamburger{display:flex;}
+    .sidebar{
+      left:calc(-1 * 240px);
+      width:240px;
+      transition:left .4s var(--ease);
+      justify-content:flex-start;
+      gap:60px;
+      padding:70px 0 40px;
+    }
+    .sidebar.open{left:0;}
+    .sidebar.open ~ .sidebar-overlay{display:block;opacity:1;}
+    .main{margin-left:0; padding:88px 18px 60px;}
+    .masonry{column-count:2; column-gap:10px;}
+    .g-item{margin-bottom:10px;border-radius:8px;}
+    .about-grid{grid-template-columns:1fr; gap:32px;}
+    .about-photo{max-height:420px;}
+    .stats{gap:28px;}
+    .info-grid{grid-template-columns:1fr; gap:14px; margin-top:44px;}
+    .skills-section{margin-top:56px;}
+    .skills-grid{grid-template-columns:repeat(2,1fr); gap:14px;}
+    .skill-card{padding:32px 14px;}
+    .lb-prev,.lb-next{width:40px;height:40px;}
+    .lb-prev{left:8px;} .lb-next{right:8px;}
+    .lb-close{top:14px;right:14px;}
+  }
+
+  @media (max-width:420px){
+    .masonry{column-count:2;}
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar" id="sidebar">
+  <div class="logo">Q</div>
+
+  <nav class="nav-menu">
+    <a href="#" class="nav-item active" data-tab="photo">Photo</a>
+    <a href="#" class="nav-item" data-tab="video">Video</a>
+    <a href="#" class="nav-item" data-tab="about">About</a>
+  </nav>
+
+  <div class="socials">
+    <a href="https://www.facebook.com/quybow/" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.9h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.9h-2.34V22c4.78-.8 8.44-4.94 8.44-9.94z"/></svg></a>
+    <a href="https://www.instagram.com/quybow" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.42.47.66.26 1.22.6 1.77 1.15.55.55.9 1.11 1.15 1.77.25.63.42 1.36.47 2.42.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.42a4.9 4.9 0 01-1.15 1.77 4.9 4.9 0 01-1.77 1.15c-.63.25-1.36.42-2.42.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.42-.47a4.9 4.9 0 01-1.77-1.15 4.9 4.9 0 01-1.15-1.77c-.25-.63-.42-1.36-.47-2.42C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.42.26-.66.6-1.22 1.15-1.77A4.9 4.9 0 015.45 2.53c.63-.25 1.36-.42 2.42-.47C8.94 2.01 9.28 2 12 2zm0 1.8c-2.67 0-2.99.01-4.04.06-.86.04-1.33.18-1.64.3-.41.16-.71.35-1.02.66-.31.31-.5.61-.66 1.02-.12.31-.26.78-.3 1.64C4.29 8.73 4.28 9.05 4.28 12s.01 3.27.06 4.32c.04.86.18 1.33.3 1.64.16.41.35.71.66 1.02.31.31.61.5 1.02.66.31.12.78.26 1.64.3 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.86-.04 1.33-.18 1.64-.3.41-.16.71-.35 1.02-.66.31-.31.5-.61.66-1.02.12-.31.26-.78.3-1.64.05-1.05.06-1.37.06-4.32s-.01-3.27-.06-4.32c-.04-.86-.18-1.33-.3-1.64a2.73 2.73 0 00-.66-1.02 2.73 2.73 0 00-1.02-.66c-.31-.12-.78-.26-1.64-.3C14.99 3.81 14.67 3.8 12 3.8zm0 3.05a5.15 5.15 0 110 10.3 5.15 5.15 0 010-10.3zm0 1.8a3.35 3.35 0 100 6.7 3.35 3.35 0 000-6.7zm5.35-1.99a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"/></svg></a>
+    <a href="https://www.tiktok.com/@quy.bow" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 2h-3.1v13.3c0 1.6-1.3 2.9-2.9 2.9a2.9 2.9 0 01-2.9-2.9 2.9 2.9 0 012.9-2.9c.28 0 .55.04.8.11V9.4a6.05 6.05 0 00-.8-.05A6.05 6.05 0 004.6 15.4a6.05 6.05 0 006.05 6.05 6.05 6.05 0 006.05-6.05V8.3a7.6 7.6 0 004.3 1.33V6.5a4.5 4.5 0 01-2.4-.7 4.5 4.5 0 01-2-3.8z"/></svg></a>
+    <a href="mailto:quybow@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1.4 2L12 12.5 19.6 7H4.4zM4 8.4V18h16V8.4l-8 5.6-8-5.6z"/></svg></a>
+  </div>
+</aside>
+
+<button class="hamburger" id="hamburger" aria-label="Menu"><span></span></button>
+<div class="sidebar-overlay" id="overlay"></div>
+
+<!-- ================= MAIN ================= -->
+<main class="main">
+
+  <!-- ---------------- PHOTO TAB ---------------- -->
+  <section class="tab-panel active" id="photo">
+    <div class="section-head">
+      <h1>Photo</h1>
+      <span>Selected Works — 2024 / 2026</span>
+    </div>
+    <div class="masonry" id="photoGrid"></div>
+  </section>
+
+  <!-- ---------------- VIDEO TAB ---------------- -->
+  <section class="tab-panel" id="video">
+    <div class="section-head">
+      <h1>Video</h1>
+      <span>Films &amp; Commercial Reels</span>
+    </div>
+    <div class="masonry" id="videoGrid"></div>
+  </section>
+
+  <!-- ---------------- ABOUT TAB ---------------- -->
+  <section class="tab-panel" id="about">
+    <div class="about-grid">
+      <div class="about-photo" id="aboutPhoto">
+        <img src="assets/photos/profile.jpg" alt="Chân dung" loading="lazy">
+      </div>
+      <div class="about-text" id="aboutText">
+        <div class="eyebrow">About Me</div>
+        <p class="lead">Tôi là một Media Creator với kinh nghiệm trong lĩnh vực sản xuất nội dung đa nền tảng, đặc biệt ở các mảng quay phim, chụp ảnh và thiết kế.</p>
+        <div class="body-text">
+          <p>Tôi có khả năng xây dựng ý tưởng, lên kịch bản và hoàn thiện sản phẩm truyền thông. Thành thạo các công cụ chỉnh sửa hình ảnh, video và luôn chú trọng đến tính thẩm mỹ, trải nghiệm người xem cũng như hiệu quả truyền tải thông điệp.</p>
+          <p>Bên cạnh kỹ năng chuyên môn, tôi có tinh thần chủ động học hỏi, khả năng thích nghi nhanh với công nghệ và thiết bị mới, làm việc có trách nhiệm, đúng tiến độ và luôn hướng đến chất lượng trong từng sản phẩm.</p>
+        </div>
+        <a href="mailto:quybow@gmail.com" class="btn-contact">Contact Me</a>
+      </div>
+    </div>
+
+    <!-- ---------------- INFO CARDS ---------------- -->
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Thông tin cá nhân</h3>
+        <p>Năm sinh: 1997<br>Vị trí: Thủ Đức</p>
+      </div>
+      <div class="info-card">
+        <h3>Bằng cấp</h3>
+        <p>Đại học Ngoại ngữ - Tin học TPHCM<br>Loại: Khá</p>
+      </div>
+      <div class="info-card">
+        <h3>Thiết bị cá nhân</h3>
+        <p>Sony A7Cr<br>Fujifilm XS-20<br>Insta 360 Ace Pro 2</p>
+      </div>
+    </div>
+
+    <!-- ---------------- SKILLS ---------------- -->
+    <div class="skills-section">
+      <div class="skills-eyebrow">Kỹ Năng Phần Mềm</div>
+      <p class="skills-desc">Công cụ hậu kỳ cho hình ảnh, video ngắn và màu sắc điện ảnh.</p>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon">CC</div>
+          <span>CapCut</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">Pr</div>
+          <span>Premiere</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">Ps</div>
+          <span>Photoshop</span>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">Lr</div>
+          <span>Lightroom</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" id="lbClose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <button class="lb-prev" id="lbPrev"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <img id="lbImage" src="" alt="">
+  <button class="lb-next" id="lbNext"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+</div>
+
+<!-- ================= VIDEO MODAL ================= -->
+<div class="video-modal" id="videoModal">
+  <button class="lb-close" id="vmClose" style="top:-56px;right:0;"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="video-frame">
+    <iframe id="vmFrame" src="" allow="autoplay; fullscreen" allowfullscreen title="Video player"></iframe>
+  </div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+const photos = [
+  {src:'assets/photos/_DSC2364.JPG', title:''},
+  {src:'assets/photos/_DSC2372.JPG', title:''},
+  {src:'assets/photos/_DSC2373.JPG', title:''},
+  {src:'assets/photos/_DSC2413.JPG', title:''},
+  {src:'assets/photos/_DSC2443.JPG', title:''},
+  {src:'assets/photos/_DSC2602.JPG', title:''},
+  {src:'assets/photos/_DSC2626.JPG', title:''},
+  {src:'assets/photos/_DSC2632.JPG', title:''},
+  {src:'assets/photos/_DSC2651.JPG', title:''},
+  {src:'assets/photos/DSC03923.JPG', title:''},
+  {src:'assets/photos/DSC03948.JPG', title:''},
+  {src:'assets/photos/DSC03991.JPG', title:''},
+  {src:'assets/photos/DSC04163.jpg', title:''},
+  {src:'assets/photos/DSC04173.jpg', title:''},
+  {src:'assets/photos/DSC04176.jpg', title:''},
+  {src:'assets/photos/DSC04895.JPG', title:''},
+  {src:'assets/photos/DSC04899.JPG', title:''},
+  {src:'assets/photos/DSC04984.JPG', title:''},
+  {src:'assets/photos/DSC05172.JPG', title:''},
+  {src:'assets/photos/DSCF5414.jpg', title:''},
+  {src:'assets/photos/DSCF5666.jpg', title:''},
+  {src:'assets/photos/DSCF5704.jpg', title:''},
+  {src:'assets/photos/DSCF5718.jpg', title:''},
+  {src:'assets/photos/DSCF5728.jpg', title:''},
+  {src:'assets/photos/DSCF5742.jpg', title:''},
+  {src:'assets/photos/DSCF5748.jpg', title:''},
+];
+
+const videos = [
+  {thumb:'https://img.youtube.com/vi/sJnXmIPL868/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/sJnXmIPL868'},
+  {thumb:'https://img.youtube.com/vi/fJmVDCscxkU/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/fJmVDCscxkU'},
+  {thumb:'https://img.youtube.com/vi/xy-73FS0Zx4/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/xy-73FS0Zx4'},
+  {thumb:'https://img.youtube.com/vi/Cw_5wfSkxLo/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/Cw_5wfSkxLo'},
+  {thumb:'https://img.youtube.com/vi/ABk4glkYoPI/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/ABk4glkYoPI'},
+  {thumb:'https://img.youtube.com/vi/3vTZyl4cYtM/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/3vTZyl4cYtM'},
+  {thumb:'https://img.youtube.com/vi/rjq45YdWfQk/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/rjq45YdWfQk'},
+  {thumb:'https://img.youtube.com/vi/MOFr5TrgqXQ/hqdefault.jpg', title:'', embed:'https://www.youtube.com/embed/MOFr5TrgqXQ'},
+];
+
+/* ============ RENDER GALLERY ============ */
+const photoGrid = document.getElementById('photoGrid');
+photos.forEach((p, i)=>{
+  const el = document.createElement('div');
+  el.className = 'g-item';
+  el.dataset.index = i;
+  el.innerHTML = `
+    <img src="${p.src}" alt="${p.title}" loading="lazy">
+    <div class="g-overlay">
+      <div class="view-icon"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z" stroke-width="1.4"/><circle cx="12" cy="12" r="3" stroke-width="1.4"/></svg></div>
+    </div>
+    <div class="g-caption">${p.title}</div>
+  `;
+  el.addEventListener('click', ()=>openLightbox(i));
+  photoGrid.appendChild(el);
+});
+
+const videoGrid = document.getElementById('videoGrid');
+videos.forEach((v, i)=>{
+  const el = document.createElement('div');
+  el.className = 'g-item';
+  el.innerHTML = `
+    <img class="thumb" src="${v.thumb}" alt="${v.title}" loading="lazy">
+    <div class="g-overlay">
+      <div class="play-icon"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div>
+    </div>
+    <div class="g-caption">${v.title}</div>
+  `;
+  el.addEventListener('click', ()=>openVideo(v.embed));
+  videoGrid.appendChild(el);
+});
+
+/* ============ SCROLL REVEAL ============ */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('reveal');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.g-item, .about-photo, .about-text, .info-card, .skill-card').forEach(el=>revealObserver.observe(el));
+
+/* ============ TABS ============ */
+const navItems = document.querySelectorAll('.nav-item');
+const panels = document.querySelectorAll('.tab-panel');
+
+function switchTab(tab){
+  navItems.forEach(n=> n.classList.toggle('active', n.dataset.tab === tab));
+  panels.forEach(p=> p.classList.toggle('active', p.id === tab));
+  closeSidebarMobile();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+navItems.forEach(n=>{
+  n.addEventListener('click', (e)=>{
+    e.preventDefault();
+    switchTab(n.dataset.tab);
+  });
+});
+
+/* ============ LIGHTBOX ============ */
+const lightbox = document.getElementById('lightbox');
+const lbImage = document.getElementById('lbImage');
+let currentIndex = 0;
+
+function openLightbox(i){
+  currentIndex = i;
+  lbImage.src = photos[i].src;
+  lbImage.alt = photos[i].title;
+  lightbox.classList.add('open');
+}
+function closeLightbox(){ lightbox.classList.remove('open'); }
+function showPrev(){ currentIndex = (currentIndex - 1 + photos.length) % photos.length; lbImage.src = photos[currentIndex].src; }
+function showNext(){ currentIndex = (currentIndex + 1) % photos.length; lbImage.src = photos[currentIndex].src; }
+
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', showPrev);
+document.getElementById('lbNext').addEventListener('click', showNext);
+lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+
+document.addEventListener('keydown', (e)=>{
+  if(lightbox.classList.contains('open')){
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowLeft') showPrev();
+    if(e.key === 'ArrowRight') showNext();
+  }
+  if(videoModal.classList.contains('open') && e.key === 'Escape') closeVideo();
+});
+
+/* ============ VIDEO MODAL ============ */
+const videoModal = document.getElementById('videoModal');
+const vmFrame = document.getElementById('vmFrame');
+
+function openVideo(embedUrl){
+  vmFrame.src = embedUrl + '?autoplay=1';
+  videoModal.classList.add('open');
+}
+function closeVideo(){
+  videoModal.classList.remove('open');
+  vmFrame.src = '';
+}
+document.getElementById('vmClose').addEventListener('click', closeVideo);
+videoModal.addEventListener('click', (e)=>{ if(e.target === videoModal) closeVideo(); });
+
+/* ============ MOBILE SIDEBAR ============ */
+const sidebar = document.getElementById('sidebar');
+const hamburger = document.getElementById('hamburger');
+const overlay = document.getElementById('overlay');
+
+hamburger.addEventListener('click', ()=>{
+  sidebar.classList.toggle('open');
+  hamburger.classList.toggle('open');
+  overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+  overlay.style.opacity = sidebar.classList.contains('open') ? '1' : '0';
+});
+overlay.addEventListener('click', closeSidebarMobile);
+
+function closeSidebarMobile(){
+  sidebar.classList.remove('open');
+  hamburger.classList.remove('open');
+  overlay.style.opacity = '0';
+  setTimeout(()=>{ overlay.style.display = 'none'; }, 300);
+}
+</script>
+</body>
+</html>
